@@ -1,3 +1,4 @@
+import django.utils.timezone
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.dispatch import receiver
@@ -72,7 +73,7 @@ class UserRequestAction(models.Model):
 class PetConsumptionAction(models.Model):
     pet = models.ForeignKey('Pet', on_delete=models.CASCADE)
     food = models.ForeignKey('PetFood', on_delete=models.CASCADE)
-    time = models.DateTimeField()
+    time = models.DateTimeField(default=django.utils.timezone.now)
     mass = models.PositiveIntegerField(default=0)
 
 

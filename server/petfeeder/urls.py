@@ -20,6 +20,7 @@ urlpatterns += [
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^api-token-auth/', views.CustomObtainAuthToken.as_view()),#auth_views.obtain_auth_token),
     url(r'register/', views.CreateUserView.as_view(), name='register'),
-    url(r'consumption/', views.PetConsumptionSummary, name='consumption')
+    url(r'consumption/', views.PetConsumptionSummary, name='consumption'),
+    url(r'request/', views.GenericRequest, name='request')
 ]
 
