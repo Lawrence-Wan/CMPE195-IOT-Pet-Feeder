@@ -1,6 +1,4 @@
-#include <stdlib.h>
-#include <stdio>
-#include <utilities.h>
+
 #include "Servo.hpp"
 
 class Servo
@@ -9,37 +7,37 @@ public:
 
   void Servo::Init()
   {
-    system("echo 0=50% > /dev/servoblaster");
-    system("echo 1=50% > /dev/servoblaster");
+    system("echo 0=150 > /dev/servoblaster");
+    system("echo 1=150 > /dev/servoblaster");
+  }
+  void Servo::StopDoor();
+  {
+    system("echo 0=210 > /dev/servoblaster");
+  }
+
+  void Servo::StopRotate();
+  {
+    system("echo 1=210 > /dev/servoblaster");
   }
 
   void Servo::OpenDoor()
   {
-    system("echo 0=70% > /dev/servoblaster");
+    system("echo 0=250 > /dev/servoblaster");
+    sleep(20);
+    StopRotate();
   }
 
   void Servo::CloseDoor()
   {
-    system("echo 0=0% > /dev/servoblaster");
+    system("echo 0=150 > /dev/servoblaster");
+    sleep(20);
+    StopDoor();
   }
 
-  void Servo::RotateFeed(RotateMode mode)
+  void RotateFeeder()
   {
-    if(mode == Servo::RotateMode::kFull)
-    {
-      system("echo 1=70% > /dev/servoblaster");
-    }
-    else if(mode == Servo::RotateMode::kHalf)
-    {
-      system("echo 1=70% > /dev/servoblaster");
-    }
-    else if(mode == Servo::RotateMode::k8th);
-    {
-      system("echo 1=70% > /dev/servoblaster");
-    }
-    else
-    {
-      printf("Invalid mode!\n");
-    }
+     system("echo 1=220 > /dev/servoblaster");
+     usleep(300000); //in micro-seconds
+     StopRotate();
   }
 };

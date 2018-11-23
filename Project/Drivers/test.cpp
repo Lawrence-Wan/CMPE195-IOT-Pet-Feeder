@@ -7,11 +7,8 @@ using namespace std;
 
 int main()
 {
-cout << "hi" << endl;
-system("echo 1=60% > /dev/servoblaster");
-sleep(1);
-cout << "hello" << endl;
-system("echo 1=40% > /dev/servoblaster");
-sleep(1);
-system("echo 1=50% > /dev/servoblaster");
+  system("echo 0=220 > /dev/servoblaster");
+  usleep(300000);
+  system("echo 0=210 > /dev/servoblaster");
+  usleep(300000);
 };
