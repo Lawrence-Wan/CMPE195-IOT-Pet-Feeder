@@ -38,6 +38,7 @@ class MqttClient {
 
     bool add_function(const std::string& topic, const Response& function) {
         if (validClient) {
+            std::cout << "Subscribing to topic " << topic << std::endl;
             return callback->add_function(topic, function);
         }
         std::cout << "invalid client" << std::endl;

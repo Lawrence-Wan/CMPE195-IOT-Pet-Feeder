@@ -1,6 +1,8 @@
 #include <iostream>
 //#include "mqtt/client.h"
 //#include "json/json.hpp"
+
+#include "FeederSettings.h"
 #include "MqttClient.h"
 #include "Response.h"
 
@@ -15,7 +17,7 @@ int main() {
     MqttClient cli(ADDRESS, CLIENT_ID);
 
     Response resp;
-    if (!cli.add_function("hello", resp)) {
+    if (!cli.add_function("/petprototype/feeder/push/321/", resp)) {
         std::cout << "failed" << std::endl;
     } else {
         std::cout << "success" << std::endl;
