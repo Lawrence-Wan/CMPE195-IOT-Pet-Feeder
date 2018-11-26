@@ -23,8 +23,8 @@ bool ok_to_feed = false;
 
 int main(void){
     wiringPiSetup();
-	
-	Servo servo;
+    
+    Servo servo;
     Rfid rfid_control;
     string tag; // = "55003AAA8540";
     string compare;
@@ -62,7 +62,7 @@ int main(void){
 //**Initialize RFID
     rfid_control.Initialize();
     rfid_control.SetTag(tag);
-	
+    
     while(true){
 
 //**check if RFID tag is available
@@ -115,7 +115,7 @@ int main(void){
         
         if(ok_to_feed){
             //dispense here
-			servo.RotateFeeder();
+            servo.RotateFeeder();
             ok_to_feed = false;
         }
         

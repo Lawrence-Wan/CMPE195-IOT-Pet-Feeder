@@ -1,5 +1,7 @@
 # CMPE195-IOT-Pet-Feeder
 
+To get the UART working on Raspberry Pi3 or Raspberry Pi Zero W.
+
 1- remove the following text in cmdline.txt WITHOUT altering the rest of the line
 
     - console=serial0,115200
