@@ -4,6 +4,13 @@
 #include <stdio.h>
 #include <unistd.h>
 
+/*
+  Servo value range: 150 --> 250
+  Stop/Stall:        210
+  Clock-Wise:        210 >
+  Counter-Clock-Wise < 210 
+*/
+
 class Servo
 {
 public:
