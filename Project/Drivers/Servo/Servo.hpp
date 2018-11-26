@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#inculde <unistd.h>
+#include <unistd.h>
 
 class Servo
 {
