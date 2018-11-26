@@ -23,6 +23,16 @@ public:
         state_mutex.unlock();
     }
 
+    void setValid() {
+        state_mutex.lock();
+        is_valid = true;
+        state_mutex.unlock();
+    }
+
+    bool isValid() {
+        return is_valid;
+    }
+
     double getSettingCup() {
         return setting_cup;    
     }
@@ -44,5 +54,8 @@ private:
     // length of interval between feedings
     double setting_interval = INVALID;
     std::string chip_id = "";
+
+    bool is_valid = false;
+
     std::mutex state_mutex;
 };
