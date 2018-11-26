@@ -96,8 +96,10 @@ int main(void){
             tempvalmeasure = false;
         }
         if(startTimer) time(&endtime);
+        
         elapsedtime = difftime(endtime,starttime)
-        (if elapsedtime > 60){//triggers after a minute
+
+        if(elapsedtime > 60){//triggers after a minute
             time(&starttime); //prevents this if loop from doing it continuously
             weightval = feed1.measure();
             //combine and send to server
@@ -113,6 +115,7 @@ int main(void){
         
         if(ok_to_feed){
             //dispense here
+			servo.RotateFeeder();
             ok_to_feed = false;
         }
         
