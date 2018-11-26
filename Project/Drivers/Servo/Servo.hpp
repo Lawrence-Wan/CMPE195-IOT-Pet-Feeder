@@ -1,5 +1,9 @@
 #pragma once
 
+#include <stdlib.h>
+#include <stdio.h>
+#inculde <unistd.h>
+
 class Servo
 {
 public:
