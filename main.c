@@ -23,12 +23,13 @@ uint8_t ok_to_feed = 0;
 
 int main(void){
     wiringPiSetup();
-
+	
+	Servo servo;
     Rfid rfid_control;
     string tag; // = "55003AAA8540";
     string compare;
     float dispense_amount = 0;
-
+    
 
 //**TODO: add wait loop to get server information
     //tag = chipID from payload
@@ -45,7 +46,7 @@ int main(void){
     dispense_amount = (init_settings.getSettingCup()) * 8;  //impeller divided in 1/8th cups
 
 //**Initialize Servos, default bowl as open - do not dispense
-
+    servo.Init();
 //**Initialize Scale, set initial weight
     feeder feed1(0); //initialize feeder1 to MCP3008 port 0
     feed1.tare(); //zero out scale
@@ -60,7 +61,7 @@ int main(void){
 //**Initialize RFID
     rfid_control.Initialize();
     rfid_control.SetTag(tag);
-
+	
     while(true){
 
 //**check if RFID tag is available

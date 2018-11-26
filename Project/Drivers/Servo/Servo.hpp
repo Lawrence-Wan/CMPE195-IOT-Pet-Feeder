@@ -10,8 +10,8 @@ public:
 
   void Init()
   {
-    system("echo 0=150 > /dev/servoblaster");
-    system("echo 1=150 > /dev/servoblaster");
+    system("echo 0=210 > /dev/servoblaster"); //Servo for Door
+    system("echo 1=210 > /dev/servoblaster"); //Servo for Dispenser
   }
   void StopDoor()
   {
