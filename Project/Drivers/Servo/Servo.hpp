@@ -1,33 +1,36 @@
+#pragma once
 
-#include "Servo.hpp"
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 
 class Servo
 {
 public:
 
-  void Servo::Init()
+  void Init()
   {
     system("echo 0=150 > /dev/servoblaster");
     system("echo 1=150 > /dev/servoblaster");
   }
-  void Servo::StopDoor();
+  void StopDoor()
   {
     system("echo 0=210 > /dev/servoblaster");
   }
 
-  void Servo::StopRotate();
+  void StopRotate()
   {
     system("echo 1=210 > /dev/servoblaster");
   }
 
-  void Servo::OpenDoor()
+  void OpenDoor()
   {
     system("echo 0=250 > /dev/servoblaster");
     sleep(20);
     StopRotate();
   }
 
-  void Servo::CloseDoor()
+  void CloseDoor()
   {
     system("echo 0=150 > /dev/servoblaster");
     sleep(20);
