@@ -22,8 +22,8 @@ class PetFeeder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     serial_id = models.CharField(unique=True, max_length=settings.UUID_LENGTH)
     food = models.ForeignKey('PetFood', on_delete=models.SET_NULL, null=True)
-    setting_cup = models.PositiveIntegerField(default=0)
-    setting_interval = models.PositiveIntegerField(default=0) # stored in minutes, 0 is off
+    setting_cup = models.FloatField(default=0)
+    setting_interval = models.FloatField(default=0) # stored in minutes, 0 is off
     setting_closure = models.BooleanField(default=False)
     pet = models.OneToOneField('Pet', on_delete=models.SET_NULL, null=True)
 
