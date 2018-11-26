@@ -16,8 +16,8 @@
 using namespace std;
 
 double dispense_time;
-uint8_t check_weight = 0;
-uint8_t ok_to_feed = 0;
+bool check_weight = false;
+bool ok_to_feed = false;
 
 //**TODO: set up timer to count down from dispense_time, after timer trips, set check_weight
 
@@ -52,8 +52,8 @@ int main(void){
     feed1.tare(); //zero out scale
     double weightval = 0; //for weight scale usage
     double tempval = 0; //for if logic
-    bool tempvalmeasure = True;
-    bool startTimer = False;
+    bool tempvalmeasure = true;
+    bool startTimer = false;
 
 //**Initilize Scale timers
     time_t starttime, endtime;
@@ -81,21 +81,19 @@ int main(void){
 //**check scale amount - 3 scenarios
         //1 - MUST - when check_weight is true record current weight, set ok_to_feed and allow feeder to 
             //dispense food, check new weight, combine and send to server, clear check_weight
-        /*
-        if(check_weight == True){
-            ok_to_feed = True;
+        if(check_weight){
+            ok_to_feed = true;
             weightval = feed1.measure();
             //combine and send to server
-            check_weight = False;
+            check_weight = false;
         }
-        */
+
         //2 - MUST - when a change in weight is detected, wait 15 seconds and compare before and after, 
             //record change and send to server
-        /*
         if(tempval < weightval-10 || tempval > weightval + 10){//if the current weight is at least 10 grams difference(tweak range for sensitivity in scale, fluctuates a lot)
             time(&starttime);
-            startTimer = True;
-            tempvalmeasure = False;
+            startTimer = true;
+            tempvalmeasure = false;
         }
         if(startTimer) time(&endtime);
         elapsedtime = difftime(endtime,starttime)
@@ -103,17 +101,21 @@ int main(void){
             time(&starttime); //prevents this if loop from doing it continuously
             weightval = feed1.measure();
             //combine and send to server
-            tempvalmeasure = True;
-            startTimer = False;
+            tempvalmeasure = true;
+            startTimer = false;
         }
-        */
+
         //3 - periodically check to maintain current weight, should not have significant changes
-        /*
         if(tempvalmeasure) tempval = feed1.measure(); //measures if it is not in "eating" mode
-        */
+        
 
 //**check impeller servo logic based on ok_to_feed flag and dispense_amount, clear ok_to_feed
-
+        
+        if(ok_to_feed){
+            //dispense here
+            ok_to_feed = false;
+        }
+        
 //**check FeederSettings.DispenseNow() to see if user wants to feed off schedule
         //set check_weight flag
 
