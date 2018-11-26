@@ -6,6 +6,7 @@
 #include <wiringPi.h>
 #include <unistd.h>
 #include <string.h>
+#include <time.h>
 #include "Projects/Drivers/RFID/Rfid.hpp"
 #include "Projects/Drivers/Servo.hpp"
 #include "clients/FeederSettings.h"
@@ -50,6 +51,11 @@ int main(void){
     feed1.tare(); //zero out scale
     double weightval = 0; //for weight scale usage
     double tempval = 0; //for if logic
+    bool tempvalmeasure = True;
+
+//**Initilize Scale timers
+    time_t starttime, endtime;
+    double elapsedtime;
 
 //**Initialize RFID
     rfid_control.Initialize();
@@ -85,13 +91,21 @@ int main(void){
             //record change and send to server
         /*
         if(tempval < weightval-10 || tempval > weightval + 10){//if the current weight is at least 10 grams difference(tweak range for sensitivity in scale, fluctuates a lot)
+            time(&starttime);
+            tempvalmeasure = False;
+        }
+        time(&endtime);
+        elapsedtime = difftime(endtime,starttime)
+        (if elapsedtime > 60){//triggers after a minute
+            time(&starttime); //prevents this if loop from doing it continuously
             weightval = feed1.measure();
             //combine and send to server
+            tempvalmeasure = True;
         }
         */
         //3 - periodically check to maintain current weight, should not have significant changes
         /*
-        tempval = feed1.measure();
+        if(tempvalmeasure) tempval = feed1.measure(); //measures if it is not in "eating" mode
         */
 
 //**check impeller servo logic based on ok_to_feed flag and dispense_amount, clear ok_to_feed
