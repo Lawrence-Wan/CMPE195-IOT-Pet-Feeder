@@ -22,8 +22,8 @@ uint8_t ok_to_feed = 0;
 
 int main(void){
     wiringPiSetup();
-    
-    Servo servo;
+	
+	Servo servo;
     Rfid rfid_control;
     string tag; // = "55003AAA8540";
     string compare;
