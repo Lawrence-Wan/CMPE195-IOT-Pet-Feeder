@@ -6,9 +6,9 @@
 #include <wiringPi.h>
 #include <unistd.h>
 #include <string.h>
-#include "Rfid.hpp"
-#include "Servo.hpp"
-#include "FeederSettings.h"
+#include "Projects/Drivers/RFID/Rfid.hpp"
+#include "Projects/Drivers/Servo.hpp"
+#include "clients/FeederSettings.h"
 
 using namespace std;
 
