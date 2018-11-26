@@ -192,9 +192,9 @@ MQTT_BROKER_PORT =  1883
 # MQTT Function Ids
 
 FEEDER_PUSH_FUNCTIONS = {
-    "FEED" : "0001",     # bowl weight change
-    "DISPENSE" : "0002", # dispense food
-    "SYNC" : "0003",   # settings change
+    "WEIGHT" : "weight",     # bowl weight change
+    "DISPENSE" : "dispense", # dispense food
+    "SYNC" : "sync",   # settings change
 }
 
 FEEDER_PULL_FUNCTIONS = {

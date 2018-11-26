@@ -33,10 +33,10 @@ class PetFeederViewSet(viewsets.ModelViewSet):
     permission_classes = (IsOwner, permissions.IsAuthenticated,)
 
     def dispatch(self, request, *args, **kwargs):
-        import pprint
-        #pprint.pprint(vars(request))
-        pprint.pprint(request.content_type)
-        pprint.pprint(request.body)
+        #import pprint
+        ##pprint.pprint(vars(request))
+        #pprint.pprint(request.content_type)
+        #pprint.pprint(request.body)
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -48,17 +48,15 @@ class PetFeederViewSet(viewsets.ModelViewSet):
         return PetFeeder.objects.none()
 
     def update(self, request, *args, **kwargs):
+        ret = super().update(request, *args, **kwargs)
+
         # generate MQTT request
-        #~print(request.data)
-        #~print(args)
-        #~print(kwargs)
         feeder_query = PetFeeder.objects.filter(id=kwargs['pk'])
         if feeder_query:
             serial_id = feeder_query[0].serial_id
-            #mqtt_utils.feeder_update_fields(serial_id, request.data)
             mqtt_utils.feeder_sync(serial_id)
 
-        return super().update(request, *args, **kwargs)
+        return ret
 
 
 class PetViewSet(viewsets.ModelViewSet):
@@ -73,16 +71,16 @@ class PetViewSet(viewsets.ModelViewSet):
             return Pet.objects.all()
         return Pet.objects.none()
 
-    def dispatch(self, request, *args, **kwargs):
-        #import pprint
-        #pprint.pprint(vars(request))
-        #print(request.content_type)
-        #print(request.body)
-        return super().dispatch(request, *args, **kwargs)
-        
-    #def create(self, validated_data):
-    #    print(validated_data.data)
-    #    return super().create(validated_data)
+    def update(self, request, *args, **kwargs):
+        ret = super().update(request, *args, **kwargs)
+
+        feeders = PetFeeder.objects.filter(pet=kwargs['pk'])
+        # generate MQTT request for each feeder
+        for feeder in feeders:
+            serial_id = feeder.serial_id
+            mqtt_utils.feeder_sync(serial_id)
+    
+        return ret
 
 
 class PetFoodViewSet(viewsets.ModelViewSet):
@@ -166,7 +164,7 @@ def PetConsumptionSummary(request):
 
     consumption_map = {}
     for i in range(length):
-        consumption_map[max_date - datetime.timedelta(days=i)] = 0
+        consumption_map[(max_date - datetime.timedelta(days=i)).date()] = 0
 
     for action in consumption:
         date = action.time.date()
@@ -182,4 +180,33 @@ def PetConsumptionSummary(request):
         consumption_map[date] += calories
 
     return JsonResponse([{str(x): y} for x,y in consumption_map.items()], safe=False)
+
+@api_view(['GET'])
+def GenericRequest(request):
+    user = request.user
+    if not user.is_authenticated:
+        return Response({"message": "User not authenticated"});
+
+    feeder_id = request.query_params.get("feeder")
+    if feeder_id == None:
+        return Response({"message": "Feeder id missing"});
+
+    feeder_query = PetFeeder.objects.filter(serial_id=feeder_id)
+    if len(feeder_query) != 1:
+        return Response({"message": "Feeder not found"});
+    
+    if feeder_query[0].user != user:
+        return Response({"message": "User not authenticated for feeder"});
+
+    command = request.query_params.get("command")
+    if command == "dispense":
+        options = {"operation" : "dispense"}
+    elif command == "weight":
+        options = {"operation" : "weight"}
+    else:
+        return Response({"message": "No valid command specified"});
+
+
+    mqtt_utils.push(feeder_id, options)
+    return Response({"message" : "Feeder dispense sent"})
 

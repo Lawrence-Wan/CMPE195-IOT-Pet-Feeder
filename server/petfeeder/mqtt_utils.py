@@ -1,7 +1,7 @@
 import paho.mqtt as mqtt
 import paho.mqtt.client
 import paho.mqtt.publish
-from petfeeder.models import PetFeeder, Pet, FoodDispenserAction, UserRequestAction
+from petfeeder.models import PetFeeder, Pet, FoodDispenserAction, UserRequestAction, PetConsumptionAction
 from django.conf import settings
 import json
 import uuid
@@ -15,20 +15,9 @@ from multiprocessing.connection import Listener
 class MqttReceiverClient:
     
     def __init__(self):
-        print("You created a client!")
-
+        print("Receiver client created")
         self.client = mqtt.client.Client()
         self.client.on_message = self.on_message
-
-        #print("Creating PetFeeder model...")
-        #p = PetFeeder(
-        #    serial_id="12345678",
-        #    food_brand="brand1",
-        #    food_servings=2,
-        #    nutrition_calories=4,
-        #    nutrition_serving_size=5
-        #)
-        #p.save()
 
     def __del__(self):
         self.client.disconnect()
@@ -39,35 +28,57 @@ class MqttReceiverClient:
         #print("client: ", dir(client))
         print("userdata: ", userdata)
         self.handle_feeder_request(message)
-        pass
 
 
     # Handles requests from the pet food feeder to update information
     def handle_feeder_request(self, message):
-        #print(dir(message))
-        print(message.payload)
 
-        # pet info update
-            # update in db
+        payload = json.loads(message.payload.decode("utf-8"))
+        if "operation" not in payload:
+            print("Missing operation")
+            return
 
-            # if chip ID updated, send on MQTT to feeder
-
-
-        # pet feeder update
-            # update in DB
-
-            # if food brand or food mass 
-        
-
-        # dispenser action
+        if payload["operation"] == "consumption":
+            self.add_consumption(payload)
+        elif payload["operation"] == "synchronize":
+            if "serial_id" in payload:
+                feeder_sync(payload["serial_id"])
+            else:
+                print("Missing serial_id for sync")
+            
 
     def start(self):
         self.client.connect(settings.MQTT_BROKER_ADDRESS)
         self.client.subscribe(settings.FEEDER_PULL_CHANNEL)
+        print("Connected to \"%s\"" % settings.MQTT_BROKER_ADDRESS)
+        print("Subscribed to \"%s\"" % settings.FEEDER_PULL_CHANNEL)
         while(True):
             self.client.loop()
-        
-        
+
+
+    # Message format
+    """
+    {
+        "serial_id" : "123456",
+        "consumption" : "123"
+    }
+    """
+    def add_consumption(self, payload):
+        if "serial_id" not in payload or "consumption" not in payload:
+            print("ERROR: missing serial_id and/or consumption")
+            return
+
+        feeder = PetFeeder.objects.filter(serial_id=payload["serial_id"])
+        if len(feeder) != 1:
+            print("ERROR: feeders found is %d" % len(feeder))
+            return
+            
+        consumption = PetConsumptionAction(
+            mass=payload["consumption"],
+            pet=feeder[0].pet,
+            food=feeder[0].food
+        )
+        consumption.save()
 
 
 # Sending functions
@@ -84,9 +95,9 @@ def publish(channel, payload):
 def push(feeder_id, data_dict):
     data_dict['request_id'] = str(uuid.uuid4())
     json_obj = json.dumps(data_dict)
-    #print("WARNING: PUSH IS NOT ENABLED. ENABLE IN mqtt_utils.py")
-    print(feeder_id)
-    print(json_obj)
+    if False:
+        print(feeder_id)
+        print(json_obj)
     publish(settings.FEEDER_PUSH_CHANNEL_ID.format(id=feeder_id), payload=json_obj)
 
 
