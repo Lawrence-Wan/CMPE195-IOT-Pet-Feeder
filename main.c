@@ -53,6 +53,7 @@ int main(void){
     double weightval = 0; //for weight scale usage
     double tempval = 0; //for if logic
     bool tempvalmeasure = True;
+    bool startTimer = False;
 
 //**Initilize Scale timers
     time_t starttime, endtime;
@@ -93,15 +94,17 @@ int main(void){
         /*
         if(tempval < weightval-10 || tempval > weightval + 10){//if the current weight is at least 10 grams difference(tweak range for sensitivity in scale, fluctuates a lot)
             time(&starttime);
+            startTimer = True;
             tempvalmeasure = False;
         }
-        time(&endtime);
+        if(startTimer) time(&endtime);
         elapsedtime = difftime(endtime,starttime)
         (if elapsedtime > 60){//triggers after a minute
             time(&starttime); //prevents this if loop from doing it continuously
             weightval = feed1.measure();
             //combine and send to server
             tempvalmeasure = True;
+            startTimer = False;
         }
         */
         //3 - periodically check to maintain current weight, should not have significant changes
