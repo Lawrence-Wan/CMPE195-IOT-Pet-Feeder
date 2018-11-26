@@ -23,6 +23,12 @@ public:
         state_mutex.unlock();
     }
 
+    void setFeedRequest(bool request) {
+        state_mutex.lock();
+        feed_requested = request;
+        state_mutex.unlock();
+    }
+
     void setValid() {
         state_mutex.lock();
         is_valid = true;
@@ -31,6 +37,10 @@ public:
 
     bool isValid() {
         return is_valid;
+    }
+
+    bool isFeedingRequested() {
+        return feed_requested;
     }
 
     double getSettingCup() {
@@ -56,6 +66,7 @@ private:
     std::string chip_id = "";
 
     bool is_valid = false;
+    bool feed_requested = false;
 
     std::mutex state_mutex;
 };
