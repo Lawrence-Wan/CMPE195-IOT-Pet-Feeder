@@ -40,7 +40,7 @@ class MqttReceiverClient:
 
         if payload["operation"] == "consumption":
             self.add_consumption(payload)
-        elif payload["operation"] == "synchronize":
+        elif payload["operation"] == "sync":
             if "serial_id" in payload:
                 feeder_sync(payload["serial_id"])
             else:
