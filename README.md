@@ -3,7 +3,7 @@
 This project is designed to create an automated pet feeder that can track the amount of food consumed by a specific pet. This information is then relayed to a server that stores the information in a database until it is accessed by the registered user via the mobile app. 
 
 The main components used are:
-	-Raspberry Pi 3 (or Pi Zero W) with Rasbian OS; 
+	-Raspberry Pi 3 (or Pi Zero W) with Raspbian OS; 
 	-ID3-LA RFID reader with external antenna; 
 	-two continuous rotation servo motors; 
 	-Force sensitive resistor; 
@@ -31,6 +31,16 @@ To set up the UART for use with ID3-LA:
 	4- reboot to effect changes
 
 To set up SPI for use with the force sensitve resistor...
+	
+	1- open a terminal and enter the command sudo raspi-config
+	2- select interfacing options
+	3- enable SPI
+	
+	or follow the section on the following site under the section labeled "Enabling Spidev on the Raspberry Pi"
+	
+	http://www.hertaville.com/interfacing-an-spi-adc-mcp3008-chip-to-the-raspberry-pi-using-c.html
+	
+The pins used by default in the source code are pins 19(MOSI) 21(MISO), 23(SCLK) and 24(CE0). MCP3008 library included in project is a modification of the one provided in the link above which misses a key important line of code which can cause ioctl errors if the data structure used to hold the SPI transfer message is not zeroed out before use.
 
 
 
