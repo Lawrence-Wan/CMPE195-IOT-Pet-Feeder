@@ -7,17 +7,23 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
-#include "Projects/Drivers/RFID/Rfid.hpp"
-#include "Projects/Drivers/Servo.hpp"
-#include "clients/FeederSettings.h"
-#include "Projects/Drivers/Weight/Feeder.cpp"
-#include "Projects/Drivers/Weight/MCP3008SPI.cpp"
+#include "client/FeederSettings.h"
+#include "client/MqttClient.h"
+#include "client/Response.h"
+#include "Project/Drivers/RFID/Rfid.hpp"
+#include "Project/Drivers/Servo/Servo.hpp"
+#include "Project/Drivers/Weight/FEEDER.cpp"
+#include "Project/Drivers/Weight/MCP3008SPI.cpp"
 
 using namespace std;
 
 double dispense_time;
 bool check_weight = false;
 bool ok_to_feed = false;
+
+constexpr char CLIENT_ID[] = "generic id";
+constexpr char ADDRESS[] = "ec2-13-57-38-126.us-west-1.compute.amazonaws.com:1883";
+const std::string FEEDER_ID = "321";
 
 //**TODO: set up timer to count down from dispense_time, after timer trips, set check_weight
 
@@ -28,8 +34,9 @@ int main(void){
     Rfid rfid_control;
     string tag; // = "55003AAA8540";
     string compare;
-    float dispense_amount = 0;
-    
+    float dispense_amount = 0; // not being used
+
+    MqttClient cli(ADDRESS, CLIENT_ID);
 
 //**TODO: add wait loop to get server information
     //tag = chipID from payload
@@ -38,10 +45,21 @@ int main(void){
     FeederSettings init_settings;
 
 //**add Response object to server to set FeederSettings - KEVIN
+    Response resp(&init_settings);
+	if (!cli.add_function("/petprototype/feeder/push/" + FEEDER_ID + "/", resp)) {
+        std::cout << "function add failed" << std::endl;
+    } else {
+        std::cout << "function add success" << std::endl;
+    }
+    
+	// get settings from the server
+    cli.send_sync(FEEDER_ID);
 
-    while (!init_settings.is_valid()) {}    //wait for server to send values
+    while (!init_settings.isValid()) {}    //wait for server to send values
 
-    tag = init_settings.getChipID();
+	std::cout << "settings retrieved" << std::endl;
+
+    tag = init_settings.getChipId();
     dispense_time = init_settings.getSettingInterval();
     dispense_amount = (init_settings.getSettingCup()) * 8;  //impeller divided in 1/8th cups
 
@@ -97,12 +115,15 @@ int main(void){
         }
         if(startTimer) time(&endtime);
         
-        elapsedtime = difftime(endtime,starttime)
+        elapsedtime = difftime(endtime,starttime);
 
         if(elapsedtime > 60){//triggers after a minute
             time(&starttime); //prevents this if loop from doing it continuously
             weightval = feed1.measure();
+
             //combine and send to server
+			//cli.send_mass(FEEDER_ID, /*weightval*/); TODO: @TOAN what variable to put here
+
             tempvalmeasure = true;
             startTimer = false;
         }
