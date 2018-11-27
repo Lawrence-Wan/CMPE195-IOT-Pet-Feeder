@@ -5,12 +5,13 @@ a specific pet. This information is then relayed to a server that stores the inf
 until it is accessed by the registered user via the mobile app. 
 
 The main components used are:
-	-Raspberry Pi 3 (or Pi Zero W) with Rasbian OS
-	-ID3-LA RFID reader with external antenna
-	-two continuous rotation servo motors
-	-Force sensitive resistor
+	-Raspberry Pi 3 (or Pi Zero W) with Rasbian OS; 
+	-ID3-LA RFID reader with external antenna; 
+	-two continuous rotation servo motors; 
+	-Force sensitive resistor; 
 
 First configure the RPi as follows:
+
 To set up the UART for use with ID3-LA:
 	1- remove the following text in cmdline.txt WITHOUT altering the rest of the line
 	    - console=serial0,115200
