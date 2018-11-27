@@ -13,6 +13,7 @@ The main components used are:
 First configure the RPi as follows:
 
 To set up the UART for use with ID3-LA:
+
 	1- remove the following text in cmdline.txt WITHOUT altering the rest of the line
 	    - console=serial0,115200
 	2- add the following two lines in config.txt
