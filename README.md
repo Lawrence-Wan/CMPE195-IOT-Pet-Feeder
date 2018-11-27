@@ -29,6 +29,34 @@ To set up SPI for use with the force sensitve resistor...
 
 To set up stuff for servo....
 
+The ServoBlaster library will be needed to interface the servos with the Raspberry Pi. The Author of the libray is Richard Girst and it can be found at https://github.com/richardghirst/PiBits/tree/master/ServoBlaster. To download ServoBlaster a you will need to download "PiBits" at https://github.com/richardghirst/PiBits which is a compilation of libraries made for the Pi by Richard Girst, however, once it is downloaded, the other labraries can be discarded.
+
+	1- Clone the PiBits github by executing the command on the command line: 
+	   <git clone https://github.com/richardghirst/PiBits>
+	   
+	   We only need the ServoBlaster library so once cloned, execute the command:
+	   <mv PiBits/ServoBlaster . && rm -rf PiBits>
+	 
+	2 - The library can now be used, however, to have it start on booting the Pi,
+	    head into the ServoBlaster/user directory in command line by typing
+	    <cd ServoBlaster/user> and then type <sudo make install> 
+	    Execute the command <./servod> to see the current configuration of the library such as
+	    GPIO pins available, pulse width, idle timeout, cycle time, etc... 
+
+	3 - Eight GPIO pins are available for ServoBlaster. Provided Below is a Servo mapping of available GPIO pins.
+	    The pins used for this project are 0 and 1 or GPIO pins 4 and 17. Refferring to a Raspberry Pi 3 Pinout diagram,
+	    Pins used are 7 and 11.
+	
+		Servo mapping:
+    	 0 on P1-7           GPIO-4
+    	 1 on P1-11          GPIO-17
+    	 2 on P1-12          GPIO-18
+     	3 on P1-13          GPIO-21
+     	4 on P1-15          GPIO-22
+     	5 on P1-16          GPIO-23
+     	6 on P1-18          GPIO-24
+     	7 on P1-22          GPIO-25
+	   
 
 
 To set up MQTT and server...
