@@ -34,4 +34,6 @@ To set up stuff for servo....
 To set up MQTT and server...
 
 
-The software will start automatically when loaded to the Pi.
+The software will start automatically when loaded to the Pi. Code can be found at https://github.com/Lawrence-Wan/CMPE195-IOT-Pet-Feeder
+
+The User will first need to enter the appropriate RFID tag found with their chip via the mobile app. A feeding schedule, number of hours between feedings, and an amount to be fed, in cups, are required as well. Once these values are saved and sent to the server, the server in turn sends these values to the Pi. Once received, the program will run automatically on the Pi. If a matching tag is received, the servo on the bowl should be opened, if it isn't already. If the tag does not match, the bowl will close off. When the time to feed occurs, the bowl will be opened, if it isn't already, and the impeller servo will rotate the appropriate distance to dispense the specified amount. A scale monitors the current weight of the food in the bowl, sending changes back to the server. The server then stores the value and accumulates a daily value that the user can then view. 
