@@ -13,7 +13,9 @@ TARGET = main
 
 all: $(TARGET)
 
-CXXFLAGS += -Wall -std=c++11 -g -O0
+
+
+CXXFLAGS += -Wall -std=c++11 -g -O0 -Wno-psabi
 CPPFLAGS += -DOPENSSL -I$(PAHO_C_INC_DIR) -I$(PAHO_CPP_DIR)/src
 
 CC = gcc

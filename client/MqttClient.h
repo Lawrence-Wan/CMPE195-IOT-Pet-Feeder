@@ -30,6 +30,26 @@ class MqttClient {
         client.publish(mqtt::make_message(topic, payload));
     }
 
+    // send mass
+
+    void send_mass(std::string feeder_id, double mass) {
+        json message;
+        message["operation"] = "consumption";
+        message["serial_id"] = feeder_id;
+        message["consumption"] = std::to_string(mass);
+        std::string payload = message.dump();
+        publish(SERVER_TOPIC.c_str(), payload.c_str());
+    }
+
+    // send sync request
+    void send_sync(std::string feeder_id) {
+        json message;
+        message["operation"] = "sync";
+        message["serial_id"] = feeder_id;
+        std::string payload = message.dump();
+        publish(SERVER_TOPIC.c_str(), payload.c_str());
+    }
+    
     /*
     void subscribe(const char* topic) {
        client.subscribe(topic);
@@ -49,4 +69,6 @@ class MqttClient {
     mqtt::client client;
 	std::unique_ptr<Callback> callback;
     bool validClient = true;
+
+    const std::string SERVER_TOPIC = "/petprototype/feeder/pull/";
 };
