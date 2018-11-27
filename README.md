@@ -1,8 +1,6 @@
 # CMPE195-IOT-Pet-Feeder
 
-This project is designed to create an automated pet feeder that can track the amount of food consumed by 
-a specific pet. This information is then relayed to a server that stores the information in a database 
-until it is accessed by the registered user via the mobile app. 
+This project is designed to create an automated pet feeder that can track the amount of food consumed by a specific pet. This information is then relayed to a server that stores the information in a database until it is accessed by the registered user via the mobile app. 
 
 The main components used are:
 	-Raspberry Pi 3 (or Pi Zero W) with Rasbian OS; 
@@ -11,6 +9,15 @@ The main components used are:
 	-Force sensitive resistor; 
 
 First configure the RPi as follows:
+
+If not already on the Rpi, download and install the wiringPi libraries, by entering the following commands:
+
+	git clone git://git.drogon.net/wiringPi
+	cd wiringPi
+	git pull origin
+	cd wiringPi
+	./build
+Or follow the Plan B instructions found at https://projects.drogon.net/raspberry-pi/wiringpi/download-and-install/
 
 To set up the UART for use with ID3-LA:
 
@@ -27,9 +34,7 @@ To set up SPI for use with the force sensitve resistor...
 
 
 
-To set up stuff for servo....
-
-The ServoBlaster library will be needed to interface the servos with the Raspberry Pi. The Author of the libray is Richard Girst and it can be found at https://github.com/richardghirst/PiBits/tree/master/ServoBlaster. To download ServoBlaster a you will need to download "PiBits" at https://github.com/richardghirst/PiBits which is a compilation of libraries made for the Pi by Richard Girst, however, once it is downloaded, the other labraries can be discarded.
+Setting up the servo needs the ServoBlaster library. The ServoBlaster library will be needed to interface the servos with the Raspberry Pi. The Author of the libray is Richard Girst and it can be found at https://github.com/richardghirst/PiBits/tree/master/ServoBlaster. To download ServoBlaster a you will need to download "PiBits" at https://github.com/richardghirst/PiBits which is a compilation of libraries made for the Pi by Richard Girst, however, once it is downloaded, the other labraries can be discarded.
 
 	1- Clone the PiBits github by executing the command on the command line: 
 	   <git clone https://github.com/richardghirst/PiBits>
@@ -59,7 +64,7 @@ The ServoBlaster library will be needed to interface the servos with the Raspber
 	   
 
 
-To set up MQTT and server...
+To set up MQTT and server follow the README.md file found in the clients folder at https://github.com/Lawrence-Wan/CMPE195-IOT-Pet-Feeder
 
 
 The software will start automatically when loaded to the Pi. Code can be found at https://github.com/Lawrence-Wan/CMPE195-IOT-Pet-Feeder
