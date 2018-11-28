@@ -1,5 +1,5 @@
-PAHO_CPP_DIR ?= /home/pi/paho.mqtt.cpp
-PAHO_C_DIR ?= /home/pi/paho.mqtt.c
+PAHO_CPP_DIR ?= /home/pi/CMPE195-Project/paho.mqtt.cpp
+PAHO_C_DIR ?= /home/pi/CMPE195-Project/paho.mqtt.c
 
 ifdef DEVELOP
   PAHO_C_LIB_DIR ?= $(PAHO_C_DIR)/build/output
