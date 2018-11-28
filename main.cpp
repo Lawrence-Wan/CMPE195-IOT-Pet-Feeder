@@ -85,12 +85,12 @@ int main(void){
 
 //**check if RFID tag is available
         rfid_control.GetTag(compare);   //check for tag present
-        if (rfid_control.CompareTag(tag, compare))  //tags match, allow pet to eat
+        if (rfid_control.CompareTag(compare))  //tags match, allow pet to eat
         {
     //**TODO: add logic to ensure bowl is open
             compare = "0";  
         } 
-        else if (!rfid_control.CompareTag(tag, compare) && compare != "0") //tags do not match, close feeder
+        else if (!rfid_control.CompareTag(compare) && compare != "0") //tags do not match, close feeder
         {
     //**TODO: add logic to ensure bowl is closed
             compare = "0";
