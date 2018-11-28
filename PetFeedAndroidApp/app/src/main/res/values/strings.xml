@@ -1,0 +1,41 @@
+<resources>
+    <string name="server_url">http://ec2-13-57-38-126.us-west-1.compute.amazonaws.com:8000</string>
+    <string name="authorization_header">Authorization</string>
+    <string name="token_prefix">Token</string>
+
+    <string name="app_name">PetFeederFirstApp</string>
+    <string name="login_token">LoginToken</string>
+    <string name="user_id">UserId</string>
+
+    <string name="add_pet_menu">Add Pet</string>
+    <string name="edit_pet_menu">Edit Pet</string>
+    <string name="pet_chip_id">Chip ID</string>
+    <string name="pet_type">Type</string>
+    <string name="pet_breed">Breed</string>
+    <string name="pet_name">Name</string>
+    <string name="pet_birthday">Birthday</string>
+
+    <string name="pet_food_name">Pet Food</string>
+    <string name="pet_calories_serving">Calories Per Serving</string>
+    <string name="pet_cups_serving">Cups Per Serving</string>
+    <string name="density">Mass Per Cup</string>
+
+    <string name="add_feeder_menu">Add Feeder</string>
+    <string name="edit_feeder_menu">Edit Feeder</string>
+    <string name="serial_id">Serial ID</string>
+    <string name="setting_cup">Cup Setting</string>
+    <string name="setting_interval">Feed Interval</string>
+
+    <string name="consumption_date_format">yyyy-MM-dd</string>
+
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="title_activity_view_pet">ViewPetActivity</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="lastname">Last Name</string>
+    <string name="firstname">First Name</string>
+    <string name="username">Username</string>
+    <string name="submit">Submit</string>
+</resources>
