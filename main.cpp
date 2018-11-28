@@ -55,6 +55,7 @@ int main(void){
 	// get settings from the server
     cli.send_sync(FEEDER_ID);
 
+	std::cout << "waiting for settings over MQTT" << std::endl;
     while (!init_settings.isValid()) {}    //wait for server to send values
 
 	std::cout << "settings retrieved" << std::endl;
@@ -79,6 +80,7 @@ int main(void){
 
 //**Initilize Scale timers
     time_t starttime, endtime;
+    time_t last_dispense_time = time(NULL); // start time at now
     double elapsedtime;
 
 //**Initialize RFID
@@ -140,6 +142,14 @@ int main(void){
             servo.RotateFeeder();
             ok_to_feed = false;
             weightval = feed1.measure();
+        }
+
+//**check to see if it is time to feed
+        time_t now = time(NULL);
+        if (now - last_dispense_time >
+            init_settings.getSettingInterval()) {
+            last_dispense_time = now;
+            // dispense here TODO: Toan
         }
         
 //**check FeederSettings.DispenseNow() to see if user wants to feed off schedule
