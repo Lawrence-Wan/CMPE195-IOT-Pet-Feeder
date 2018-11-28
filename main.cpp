@@ -93,7 +93,7 @@ int main(void){
 
 //**check if RFID tag is available
         rfid_control.GetTag(compare);   //check for tag present
-        if (rfid_control.CompareTag(tag, compare))  //tags match, allow pet to eat
+        if (rfid_control.CompareTag(compare))  //tags match, allow pet to eat
         {
 //printf("compare tag: %s\n", compare.c_str());
 	    if (!doorIsOpen)
@@ -101,7 +101,7 @@ int main(void){
             compare = "0";  
 	    doorIsOpen = 1;
         } 
-        else if (!rfid_control.CompareTag(tag, compare) && compare != "0") //tags do not match, close feeder
+        else if (!rfid_control.CompareTag(compare) && compare != "0") //tags do not match, close feeder
         {
 //printf("compare: %s\n", compare.c_str());
 	    if (doorIsOpen)
