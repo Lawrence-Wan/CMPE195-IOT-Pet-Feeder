@@ -12,10 +12,14 @@ This project is designed to create an automated pet feeder that can track the am
 
 ## Components
 
-The main components used are:
+The main components used are the following:
+	
 	-Raspberry Pi 3 (or Pi Zero W) with Raspbian OS; 
+	
 	-ID3-LA RFID reader with external antenna; 
+	
 	-two continuous rotation servo motors; 
+	
 	-Force sensitive resistor; 
 
 ## Installation
