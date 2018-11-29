@@ -184,6 +184,19 @@ Make sure libpaho-mqttpp3.so.1 exists in /usr/local/lib/ and make sure sudo make
 sudo ldconfig
 ```
 
+### Client Compilation
+
+After all of the above has been completed, return to the root directory of this repository and run the following command:
+
+```
+make main
+```
+
+Then run the program:
+```
+./main
+```
+
 ## Usage
 
 The software will start automatically when loaded to the Pi. Code can be found at https://github.com/Lawrence-Wan/CMPE195-IOT-Pet-Feeder
