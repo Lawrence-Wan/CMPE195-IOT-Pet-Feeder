@@ -1,12 +1,24 @@
 # CMPE195-IOT-Pet-Feeder
 
+## Code Link
+
+Code can be found at https://github.com/Lawrence-Wan/CMPE195-IOT-Pet-Feeder
+
+
+## Introduction
+
 This project is designed to create an automated pet feeder that can track the amount of food consumed by a specific pet. This information is then relayed to a server that stores the information in a database until it is accessed by the registered user via the mobile app. 
+
+
+## Components
 
 The main components used are:
 	-Raspberry Pi 3 (or Pi Zero W) with Raspbian OS; 
 	-ID3-LA RFID reader with external antenna; 
 	-two continuous rotation servo motors; 
 	-Force sensitive resistor; 
+
+## Installation
 
 First configure the RPi as follows:
 
@@ -168,7 +180,7 @@ Make sure libpaho-mqttpp3.so.1 exists in /usr/local/lib/ and make sure sudo make
 sudo ldconfig
 ```
 
-## Etc
+## Usage
 
 The software will start automatically when loaded to the Pi. Code can be found at https://github.com/Lawrence-Wan/CMPE195-IOT-Pet-Feeder
 
