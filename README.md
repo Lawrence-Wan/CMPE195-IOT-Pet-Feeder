@@ -73,9 +73,102 @@ Setting up the servo needs the ServoBlaster library. The ServoBlaster library wi
      	7 on P1-22          GPIO-25
 	   
 
+### Server Setup
 
-To set up MQTT and server follow the README.md file found in the clients folder at https://github.com/Lawrence-Wan/CMPE195-IOT-Pet-Feeder
+#### 1. Installation: REST API Setup
 
+Set up an AWS server with an Ubuntu distro then do the following if not already done:
+
+-  Install python3
+-  Install pip3
+-  Install virtualenv
+```
+sudo apt install virtualenv
+```
+-  Create and activate virtualenv with the following commands
+```
+virtualenv env
+source env/bin/activate
+```
+-  Install django & djangorestframework + dependencies with the following commands
+```
+pip3 install django
+pip3 install djangorestframework
+pip3 install psycopg2
+```
+-  Install MQTT for Python
+```
+pip3 install paho-mqtt
+```
+-  Install PSQL locally
+```
+sudo apt install postgresql
+```
+-  Start Docker Postgres container on port 25432
+-  Ensure crendentials match to connect to server by using the following example commands
+```
+CREATE USER petprototype WITH password '123123';
+CREATE DATABASE petprototype;
+```
+
+-  Migrate the models
+```
+python3 manage.py migrate
+```
+-  Run server
+```
+python3 manage.py runserver
+```
+- Run the MQTT service
+```
+python3 manage.py runmqtt
+```
+
+### MQTT Client Service Installation
+#### Installation
+Install https://github.com/eclipse/paho.mqtt.c
+
+```
+apt-get install build-essential gcc make cmake fakeroot fakeroot devscripts \
+                dh-make lsb-release libssl-dev doxygen graphviz
+```
+
+cd into the mqtt directory
+
+```
+make
+sudo make install
+```
+
+Install https://github.com/eclipse/paho.mqtt.cpp
+```
+git clone https://github.com/eclipse/paho.mqtt.cpp
+cd paho.mqtt.cpp
+mkdir build
+cd build
+cmake -DPAHO_BUILD_DOCUMENTATION=TRUE -DPAHO_BUILD_SAMPLES=TRUE -DPAHO_MQTT_C_PATH=../../paho.mqtt.c ..
+make
+sudo make install
+```
+
+Make sure shared libraries can be found
+```
+sudo ldconfig
+```
+
+
+
+
+#### Issues encountered with paho.mqtt.cpp:
+
+-  error while loading shared libraries: libpaho-mqttpp3.so.1
+
+Make sure libpaho-mqttpp3.so.1 exists in /usr/local/lib/ and make sure sudo make install was run in paho.mqtt.cpp. Then run
+```
+sudo ldconfig
+```
+
+## Etc
 
 The software will start automatically when loaded to the Pi. Code can be found at https://github.com/Lawrence-Wan/CMPE195-IOT-Pet-Feeder
 
