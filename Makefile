@@ -27,3 +27,6 @@ LDLIBS_SSL += -L$(PAHO_CPP_DIR)/lib -L$(PAHO_C_LIB_DIR) -lpaho-mqttpp3 -lpaho-mq
 
 main: main.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(WIRING_PI) -o $@ $< $(LDLIBS)
+
+main2: main2.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(WIRING_PI) -o $@ $< $(LDLIBS)

@@ -146,7 +146,8 @@ printf("compare: %s\n", compare.c_str());
 
 //**check impeller servo logic based on ok_to_feed flag and dispense_amount, clear ok_to_feed
         
-        if(ok_to_feed){
+        //if(ok_to_feed){
+        if(init_settings.isFeedingRequested()){
             //dispense here
             servo.RotateFeeder(dispense_amount);
             ok_to_feed = false;
