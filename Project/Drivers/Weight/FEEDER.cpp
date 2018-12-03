@@ -49,7 +49,12 @@ double feeder::read(){ //read current weight value
 } 
 
 double feeder::measure(){
-    double value = read();
+    int SAMPLE_COUNT = 10;
+    double value = 0;
+    for(int i = 0; i < SAMPLE_COUNT; i++){
+        value += read();
+    }
+    value /= SAMPLE_COUNT;
     value -= this->tareValue;
     if(value <= 0) value = 0; //in the case that its 0 or negative, slight misreading of weight
     return value;
