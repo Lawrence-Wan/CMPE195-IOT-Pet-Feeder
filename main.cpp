@@ -115,6 +115,7 @@ int main(void){
             time(&starttime);
             startTimer = true;
             tempvalmeasure = false;
+            tempval = weightval; //prevents this from triggering again till after timeout
         }
         
         if(startTimer) time(&endtime); //only active when feeding
