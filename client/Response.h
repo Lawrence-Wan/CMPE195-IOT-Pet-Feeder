@@ -43,6 +43,7 @@ class Response {
             settings->setSettingInterval(setting_interval);
             settings->setChipId(chip_id);
             settings->setValid();
+            settings->setSettingsUpdate(true);
         } catch (json::out_of_range& e) {
             std::cout << "message: " << e.what() << std::endl;
         }
