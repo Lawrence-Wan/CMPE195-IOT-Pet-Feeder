@@ -33,14 +33,14 @@ public:
   void OpenDoor()
   {
     system("echo 0=250 > /dev/servoblaster");
-    sleep(20);
+    sleep(45);
     StopRotate();
   }
 
   void CloseDoor()
   {
     system("echo 0=150 > /dev/servoblaster");
-    sleep(20);
+    sleep(45);
     StopDoor();
   }
 
