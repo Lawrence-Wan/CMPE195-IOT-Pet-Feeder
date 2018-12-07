@@ -22,12 +22,14 @@ public:
 
 	void SetTag(string &tag)
 	{
-		string temp = "0002520309";
-		uint32_t convert = stoul(temp, nullptr); //convert string to uint - "1234" to 1234
+		uint32_t convert = stoul(tag, nullptr); //convert string to uint - "1234" to 1234
 		stringstream ss; //used to create a hex based string from convert
 
 		ss << uppercase << hex << setw(8) << setfill('0') << convert; //creates an 8 digit hex stream of convert with leading zeros
 		programmed_tag = ss.str(); //converts stream to string
+
+printf("programmed_tag: %s\n", programmed_tag.c_str());
+
 	}
 	
 
