@@ -39,6 +39,14 @@ public:
     bool isValid() {
         return is_valid;
     }
+    
+    void setSettingsUpdate(bool state) {
+        settings_updated = state;
+    }
+    
+    bool didSettingsUpdate() {
+        return settings_updated;
+    }
 
     bool isFeedingRequested() {
         return feed_requested;
@@ -67,6 +75,7 @@ private:
     std::string chip_id = "";
 
     bool is_valid = false;
+    bool settings_updated = false;
     bool feed_requested = false;
 
     std::mutex state_mutex;
