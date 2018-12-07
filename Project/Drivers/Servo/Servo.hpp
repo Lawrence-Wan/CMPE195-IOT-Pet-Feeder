@@ -28,13 +28,14 @@ public:
   void StopRotate()
   {
     system("echo 1=210 > /dev/servoblaster");
+    sleep(2);
   }
 
   void OpenDoor()
   {
     system("echo 0=250 > /dev/servoblaster");
     sleep(45);
-    StopRotate();
+    StopDoor();
   }
 
   void CloseDoor()
@@ -44,10 +45,13 @@ public:
     StopDoor();
   }
 
-  void RotateFeeder()
+  void RotateFeeder(uint8_t rot_amount)
   {
-     system("echo 1=220 > /dev/servoblaster");
-     usleep(300000); //in micro-seconds
-     StopRotate();
+     for (int i = 0; i < rot_amount; i++)
+     {
+     	system("echo 1=230 > /dev/servoblaster");
+     	usleep(300000); //in micro-seconds
+     	StopRotate();
+     }
   }
 };
