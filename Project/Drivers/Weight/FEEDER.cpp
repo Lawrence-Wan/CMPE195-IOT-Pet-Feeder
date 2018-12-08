@@ -26,26 +26,33 @@ double feeder::convert(int reading){ //convert ADC value to grams, has math equa
 }
 
 double feeder::read(){ //read current weight value
-    mcp3008 a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
-    int val = 0;
-    unsigned char data[3];
 
-    //data to send
-    data[0] = 1;
-    data[1] = 0b10000000 |( ((this->ch & 7) << 4));
-    data[2] = 0;
+    int SAMPLE_COUNT = 10;
+    double avg = 0;
 
-    //send data
-    a2d.spiWriteRead(data, sizeof(data) );
+    for(int i = 0; i < SAMPLE_COUNT; i++){
+        mcp3008 a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
+        int val = 0;
+        unsigned char data[3];
 
-    //read result
-    val = 0;
-    val = (data[1]<< 8) & 0b1100000000; //2^10 so 10 bits, message is in two parts
-    val |=  (data[2] & 0xff);
+        //data to send
+        data[0] = 1;
+        data[1] = 0b10000000 |( ((this->ch & 7) << 4));
+        data[2] = 0;
 
-    //convert result to grams, subtract tare(pre coverted to grams)
-    double retvalue = convert(val);
-    return retvalue;
+        //send data
+        a2d.spiWriteRead(data, sizeof(data) );
+
+        //read result
+        val = 0;
+        val = (data[1]<< 8) & 0b1100000000; //2^10 so 10 bits, message is in two parts
+        val |=  (data[2] & 0xff);
+
+        //convert result to grams, subtract tare(pre coverted to grams)
+        avg += convert(val);
+    }
+    avg /= SAMPLE_COUNT;
+    return avg;
 } 
 
 double feeder::measure(){
