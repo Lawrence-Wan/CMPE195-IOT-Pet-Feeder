@@ -33,16 +33,18 @@ public:
 
   void OpenDoor()
   {
-    system("echo 0=250 > /dev/servoblaster");
+    system("echo 0=150 > /dev/servoblaster");
     sleep(45);
     StopDoor();
   }
 
   void CloseDoor()
   {
-    system("echo 0=150 > /dev/servoblaster");
+printf("pause 45 seconds\n");
+    system("echo 0=250 > /dev/servoblaster");
     sleep(45);
     StopDoor();
+printf("resume\n");
   }
 
   void RotateFeeder(uint8_t rot_amount)

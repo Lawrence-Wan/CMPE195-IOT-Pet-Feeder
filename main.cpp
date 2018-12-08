@@ -52,7 +52,8 @@ int main(void){
     bool startTimer = false;
     time_t starttime, endtime;
     time_t last_dispense_time = time(NULL); //start timer at this time;
-    double elapsedtime;
+    time_t now;
+//    double elapsedtime;
 	
     MqttClient cli(ADDRESS, CLIENT_ID);
 //    FeederSettings init_settings;
@@ -72,6 +73,7 @@ std::cout << "settings retrieved" << std::endl;
     tag = init_settings.getChipId();
     dispense_time = init_settings.getSettingInterval();
     dispense_amount = (init_settings.getSettingCup()) * 8;  //impeller divided in 1/8th cups
+    init_settings.setSettingsUpdate(false);
 
 //tag = "001662697";
 //printf("init servo\n");	//printf("init servo\n");
@@ -81,7 +83,8 @@ std::cout << "settings retrieved" << std::endl;
 //**Initialize Scale, set initial weight
     scale.tare(); //zero out scale
     weightval = scale.measure(); //initialize food current weight
-    tempval = scale.measure(); //initialize food current weight
+//    tempval = scale.measure(); //initialize food current weight
+    tempval = weightval;
 
 //**Initialize RFID
     rfid_control.Initialize();
@@ -90,8 +93,11 @@ std::cout << "settings retrieved" << std::endl;
     while(true){
 	    if(init_settings.didSettingsUpdate()) {
 		    // update vars
-		    
-		    init_settings.setSettingsUpdate(false);
+		tag = init_settings.getChipId();
+		rfid_control.SetTag(tag);
+		dispense_time = init_settings.getSettingInterval();
+		dispense_amount = (init_settings.getSettingCup()) * 8;    
+		init_settings.setSettingsUpdate(false);
 	    }
 
 //**check if RFID tag is available
@@ -104,7 +110,7 @@ std::cout << "settings retrieved" << std::endl;
 	    if (!doorIsOpen){	//door is closed
 		servo.OpenDoor();
 		doorIsOpen = true;
-		sleep(50);	//allow time for door to open before despensing food
+//		sleep(50);	//allow time for door to open before despensing food
 	    }
             servo.RotateFeeder(dispense_amount);
 //	    checkScale();	//record the new weight
@@ -143,24 +149,15 @@ std::cout << "settings retrieved" << std::endl;
         }
 //**TODO:*****THIS PART NO LONGER NEEDED
         //3 - periodically check to maintain current weight, should not have significant changes
-        if(tempvalmeasure) tempval = feed1.measure(); //measures if it is not in "eating" mode
+        if(tempvalmeasure) tempval = scale.measure(); //measures if it is not in "eating" mode
 //********************************
 
-//**check impeller servo logic based on ok_to_feed flag and dispense_amount, clear ok_to_feed
-        
-        if(ok_to_feed){
-            //dispense here
-            servo.RotateFeeder();
-            ok_to_feed = false;
-            weightval = feed1.measure();
-        }
 
 //**check to see if it is time to feed
-        time_t now = time(NULL);
-        if (now - last_dispense_time >
-            init_settings.getSettingInterval()) {
+        now = time(NULL);
+        if (now - last_dispense_time > dispense_time) {
             last_dispense_time = now;
-            // dispense here TODO: Toan
+	    ok_to_feed = true;
         }
         
 //**check FeederSettings.DispenseNow() to see if user wants to feed off schedule
@@ -169,7 +166,29 @@ std::cout << "settings retrieved" << std::endl;
     }
 }
 
-oid checkRfid()
+void checkRfid()
 {
 	string compare;		//ID read from RFID module
 
+	rfid_control.GetTag(compare);	//check for tag present
+	if (rfid_control.CompareTag(compare))	//tags match, allow pet to eat
+	{
+	    printf("compare: %s\n", compare.c_str());
+	    if (!doorIsOpen){
+		servo.OpenDoor();
+	    	doorIsOpen = true;
+		printf("open door %d\n", doorIsOpen);
+	    }
+	    compare = "0";
+	}
+	else if (!rfid_control.CompareTag(compare) && compare != "0")
+	{ //tags do not match and compare is not emtpy, close feeder
+	    printf("compare: %s\n", compare.c_str());
+	    if (doorIsOpen) {
+		servo.CloseDoor();
+	    	doorIsOpen = false;
+		printf("close door %d\n", doorIsOpen);
+	    }
+	    compare = "0";
+	}
+}
